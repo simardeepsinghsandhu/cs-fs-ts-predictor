@@ -25,8 +25,8 @@ with col2:
     st.write('Fiber Properties')
     fibre_length = st.number_input('Fibre Length(mm) (6 to 19)', min_value = 6.0, max_value = 19.0)
     fibre_volume = st.number_input('Fibre Volume(%) (0 to 11.21)', min_value = 0.0, max_value = 11.21)
-    fibre_dia = st.number_input('Fibre Dia(\u03BCm) (12 to 200)', min_value = 12.0, max_value = 200.0)
-    fibre_density = st.number_input('Fibre Density(Kg/M\u00b3) (970 to 1846)', min_value = 970.0, max_value = 1846.0)
+    fibre_dia = st.number_input('Fibre Dia(Um) (12 to 200)', min_value = 12.0, max_value = 200.0)
+    fibre_density = st.number_input('Fibre Density(Kg/M3) (970 to 1846)', min_value = 970.0, max_value = 1846.0)
     fibre_elasticity = st.number_input('Fibre Elasticity(Mpa) (16.9 to 66)', min_value = 16.9, max_value = 66.0)
 
 features = np.array([cement, fly_ash, sand2, sand3, sand4, limestone, bsf, silica_fume, w_b, sp, fibre_length, fibre_volume, fibre_elasticity, fibre_dia, fibre_density])
@@ -34,22 +34,14 @@ features = features.reshape(1, -1)
 
 with col3:
     st.write('Predictions')
-    option = st.selectbox(
-        'Please select the entity to be predicted:',
-        ('Compressive Strength(Mpa)', 'Tensile Strain Capacity(%)', 'Flexural Strength(Mpa)'))
-
-    st.write('You selected:', option)
 
     if st.button('Predict'):
-        if option=='Compressive Strength(Mpa)':
-            model = pickle.load(open('cs.sav', 'rb'))
-            pred = model.predict(features)
-            st.write(f'CS value: {pred[0]}')
-        elif option=='Tensile Strain Capacity(%)':
-            model = pickle.load(open('ts.sav', 'rb'))
-            pred = model.predict(features)
-            st.write(f'TS value: {pred[0]}')
-        else:
-            model = pickle.load(open('fs.sav', 'rb'))
-            pred = model.predict(features)
-            st.write(f'FS value: {pred[0]}')
+        model = pickle.load(open('cs.sav', 'rb'))
+        pred = model.predict(features)
+        st.write(f'CS value: {pred[0]}')
+        model = pickle.load(open('ts.sav', 'rb'))
+        pred = model.predict(features)
+        st.write(f'TS value: {pred[0]}')
+        model = pickle.load(open('fs.sav', 'rb'))
+        pred = model.predict(features)
+        st.write(f'FS value: {pred[0]}')
